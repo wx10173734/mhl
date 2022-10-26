@@ -1,5 +1,6 @@
 package com.lzc.mhl.view;
 
+import com.lzc.mhl.domain.Bill;
 import com.lzc.mhl.domain.DiningTable;
 import com.lzc.mhl.domain.Employee;
 import com.lzc.mhl.domain.Menu;
@@ -159,6 +160,18 @@ public class MHLView {
         }
     }
 
+    /**
+     * 查看账单
+     */
+    public void listBill() {
+        System.out.println("编号\t\t菜品号\t\t菜品量\t\t金额\t\t桌号\t\t日期\t\t\t\t\t\t\t状态");
+        List<Bill> bills = billService.listBill();
+        for (Bill bill : bills) {
+            System.out.println(bill);
+        }
+
+    }
+
 
     //显示主菜单
     public void mainMenu() {
@@ -204,7 +217,7 @@ public class MHLView {
                                     orderMenu();
                                     break;
                                 case "5":
-                                    System.out.println("查看账单");
+                                    listBill();
                                     break;
                                 case "6":
                                     System.out.println("结账");

@@ -104,8 +104,8 @@ public class Bill {
         this.state = state;
     }
 
-//    @Override
-//    public String toString() {
-//        return id + "\t\t" + menuId + "\t\t" + nums + "\t\t" + money + "\t\t" + diningTableId + "\t\t" + billDate + "\t\t" + state;
-//    }
+    @Override
+    public String toString() {
+        return id + "\t\t" + menuId + "\t\t\t" + nums + "\t\t\t" + money + "\t" + diningTableId + "\t\t" + billDate + "\t\t" + state;
+    }
 }

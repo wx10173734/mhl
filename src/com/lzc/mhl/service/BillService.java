@@ -37,9 +37,9 @@ public class BillService {
         return diningTableService.updateDiningTableState(diningTableId, "就餐中");
     }
 
-//    //查询所有账单
-//    public List<Bill> listBill() {
-//        List<Bill> list = billDao.queryMulti("select * from bill", Bill.class);
-//        return list;
-//    }
+    //查询所有账单
+    public List<Bill> listBill() {
+        List<Bill> list = billDao.queryMulti("select * from bill", Bill.class);
+        return list;
+    }
 }
