@@ -33,4 +33,12 @@ public class DiningTableService {
         int update = diningTableDao.update("update diningtable set state='已经预定',orderName=?,orderTel =? where id =?", orderName, orderTel, id);
         return update > 0;
     }
+
+
+    //需要一个提供更新餐桌状态的方法
+    public boolean updateDiningTableState(int id, String state) {
+        int update = diningTableDao.update("update diningtable set state=? where id=?", state, id);
+        return update > 0;
+
+    }
 }

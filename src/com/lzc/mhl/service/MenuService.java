@@ -19,4 +19,12 @@ public class MenuService {
         List<Menu> menuList = menuDao.queryMulti("select * from menu", Menu.class);
         return menuList;
     }
+
+    //获取菜品单价
+    public Menu getMenuById(int id) {
+        Menu menu = menuDao.querySingle("select * from menu where id=?", Menu.class, id);
+        return menu;
+    }
+
+
 }

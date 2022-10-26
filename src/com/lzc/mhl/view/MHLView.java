@@ -3,6 +3,7 @@ package com.lzc.mhl.view;
 import com.lzc.mhl.domain.DiningTable;
 import com.lzc.mhl.domain.Employee;
 import com.lzc.mhl.domain.Menu;
+import com.lzc.mhl.service.BillService;
 import com.lzc.mhl.service.DiningTableService;
 import com.lzc.mhl.service.EmployeeService;
 import com.lzc.mhl.service.MenuService;
@@ -25,6 +26,8 @@ public class MHLView {
     private EmployeeService employeeService = new EmployeeService();
     private DiningTableService diningTableService = new DiningTableService();
     private MenuService menuService = new MenuService();
+
+    private BillService billService = new BillService();
 
     public static void main(String[] args) {
         new MHLView().mainMenu();
@@ -63,7 +66,7 @@ public class MHLView {
                 return;
             }
             //判断该餐桌的状态是否为空
-            if ("已经预定".equals(diningTable.getState())) {//说明餐桌不是空状态
+            if (!("空".equals(diningTable.getState()))) {//说明餐桌不是空状态
                 System.out.println("============该餐桌已经预定或就餐中============");
                 return;
             }
@@ -82,6 +85,66 @@ public class MHLView {
         } else {
             System.out.println("============预定餐桌失败============");
         }
+
+    }
+
+    /**
+     * 点餐
+     */
+    public void orderMenu() {
+        System.out.println("============点餐服务============");
+        System.out.println("请输入点餐的桌号(-1退出):");
+        int diningTableId = Utility.readInt(1);
+        if (diningTableId == -1) {
+            System.out.println("============取消点餐============");
+            return;
+        }
+
+        DiningTable diningTable = diningTableService.getDiningTableById(diningTableId);
+        //验证桌号
+        if (diningTable == null) {
+            System.out.println("桌号不存在");
+            return;
+        }
+
+
+        System.out.println("请选择要点的菜品编号(-1退出):");
+        int menuId = Utility.readInt(1);
+        if (menuId == -1) {
+            System.out.println("============取消点餐============");
+            return;
+        }
+
+
+        //验证菜品编号
+        Menu menu = menuService.getMenuById(menuId);
+        if (menu == null) {
+            System.out.println("菜品不存在");
+            return;
+        }
+
+
+        System.out.println("请选择菜品数量(-1退出):");
+        int nums = Utility.readInt(1);
+        if (nums == -1) {
+            System.out.println("============取消点餐============");
+            return;
+        }
+
+        char key = Utility.readConfirmSelection();
+        if (key == 'Y') {
+
+            boolean orderMenuState = billService.orderMenu(menuId, nums, diningTableId);
+            if (orderMenuState) {
+                System.out.println("============点餐成功============");
+            } else {
+                System.out.println("============点餐失败============");
+            }
+        } else {
+            System.out.println("============取消点餐============");
+
+        }
+
 
     }
 
@@ -138,7 +201,7 @@ public class MHLView {
                                     menuList();
                                     break;
                                 case "4":
-                                    System.out.println("点餐服务");
+                                    orderMenu();
                                     break;
                                 case "5":
                                     System.out.println("查看账单");
