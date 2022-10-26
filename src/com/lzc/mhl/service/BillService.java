@@ -42,4 +42,26 @@ public class BillService {
         List<Bill> list = billDao.queryMulti("select * from bill", Bill.class);
         return list;
     }
+
+    //查看某个餐桌是否有未结账的账单
+    public boolean hasPayBillByDiningTableId(int diningTableId) {
+        Bill bill = billDao.querySingle("select * from bill where diningTableId=? and state='未结账' limit 0,1", Bill.class, diningTableId);
+        return bill != null;
+    }
+
+    //完成结账【如果餐桌存在，并且餐桌有未结账的账单】
+    public boolean payBill(int diningTableId, String payMode) {
+
+        //1.修改bill表
+        int update = billDao.update("update bill set state = ? where diningTableId=? and state='未结账'", payMode, diningTableId);
+        if (update<=0){
+            return false;
+        }
+        //2.修改diningtable表
+        if (!diningTableService.updateDiningTableToFree(diningTableId,"空")){
+        return false;
+        }
+        return true;
+
+    }
 }
