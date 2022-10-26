@@ -1,7 +1,9 @@
 package com.lzc.mhl.service;
 
 import com.lzc.mhl.dao.BillDao;
+import com.lzc.mhl.dao.MultiTableDao;
 import com.lzc.mhl.domain.Bill;
+import com.lzc.mhl.domain.MultiTableBean;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +19,7 @@ public class BillService {
     private BillDao billDao = new BillDao();
     private MenuService menuService = new MenuService();
     private DiningTableService diningTableService = new DiningTableService();
+    private MultiTableDao multiTableDao = new MultiTableDao();
 
 
     //编写点餐的方法
@@ -43,6 +46,12 @@ public class BillService {
         return list;
     }
 
+    //查询所有账单并带有菜品名
+    public List<MultiTableBean> listBill2() {
+        List<MultiTableBean> list = multiTableDao.queryMulti("select bill.*,name,price from bill,menu where bill.menuId = menu.id", MultiTableBean.class);
+        return list;
+    }
+
     //查看某个餐桌是否有未结账的账单
     public boolean hasPayBillByDiningTableId(int diningTableId) {
         Bill bill = billDao.querySingle("select * from bill where diningTableId=? and state='未结账' limit 0,1", Bill.class, diningTableId);
@@ -54,12 +63,12 @@ public class BillService {
 
         //1.修改bill表
         int update = billDao.update("update bill set state = ? where diningTableId=? and state='未结账'", payMode, diningTableId);
-        if (update<=0){
+        if (update <= 0) {
             return false;
         }
         //2.修改diningtable表
-        if (!diningTableService.updateDiningTableToFree(diningTableId,"空")){
-        return false;
+        if (!diningTableService.updateDiningTableToFree(diningTableId, "空")) {
+            return false;
         }
         return true;
 

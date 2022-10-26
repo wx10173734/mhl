@@ -1,9 +1,6 @@
 package com.lzc.mhl.view;
 
-import com.lzc.mhl.domain.Bill;
-import com.lzc.mhl.domain.DiningTable;
-import com.lzc.mhl.domain.Employee;
-import com.lzc.mhl.domain.Menu;
+import com.lzc.mhl.domain.*;
 import com.lzc.mhl.service.BillService;
 import com.lzc.mhl.service.DiningTableService;
 import com.lzc.mhl.service.EmployeeService;
@@ -164,10 +161,15 @@ public class MHLView {
      * 查看账单
      */
     public void listBill() {
-        System.out.println("编号\t\t菜品号\t\t菜品量\t\t金额\t\t桌号\t\t日期\t\t\t\t\t\t\t状态");
-        List<Bill> bills = billService.listBill();
-        for (Bill bill : bills) {
-            System.out.println(bill);
+//        System.out.println("编号\t\t菜品号\t\t菜品量\t\t金额\t\t桌号\t\t日期\t\t\t\t\t\t\t状态");
+//        List<Bill> bills = billService.listBill();
+//        for (Bill bill : bills) {
+//            System.out.println(bill);
+//        }
+        List<MultiTableBean> multiTableBeans = billService.listBill2();
+        System.out.println("编号\t\t菜品号\t\t菜品量\t\t金额\t\t桌号\t\t日期\t\t\t\t\t\t\t状态\t\t菜品名\t\t价格");
+        for (MultiTableBean multiTableBean : multiTableBeans) {
+            System.out.println(multiTableBean);
         }
 
     }
